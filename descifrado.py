@@ -10,7 +10,7 @@ import re
 characters = string.ascii_lowercase
 length = 3
 contrasennaEncontrada = False;
-archivo_pass = "rockyouLowercase.txt"
+archivo_pass = "rockyou5.txt"
 lineas_procesadas = []
 contrasenna = ""
 lock = threading.Lock()
@@ -23,7 +23,7 @@ def contiene_palabras_con_numeros(linea):
             return True
     return False
 
-"""
+
 with open(archivo_pass, "rb") as archivo:
     # Leer cada línea del archivo
     for linea in archivo:
@@ -31,7 +31,7 @@ with open(archivo_pass, "rb") as archivo:
         l_aux = l_aux.lower().strip()
         if str(l_aux).isascii() and not contiene_palabras_con_numeros(l_aux) and re.match(r'^[a-z]+$', l_aux):
             lineas_procesadas.append(l_aux)
-"""
+
 
 def divideLista(lista:list, tamanno:int):
     tamannoSublista = len(lista) // (tamanno-1)
@@ -39,9 +39,9 @@ def divideLista(lista:list, tamanno:int):
     return sublistas
     
 def ProbarContraseña(id:int, combinations:list, data):
-
-    for password in combinations:
-
+    i = 0
+    #3000
+    for password in combinations[2000:3000]:
         resultado = gpg.decrypt(data, passphrase=password)
         
         if resultado.ok:
@@ -50,20 +50,22 @@ def ProbarContraseña(id:int, combinations:list, data):
             contrasennaEncontrada = True
             lock.acquire()
             contrasenna = password
+            f = open("pass.txt", "w")
+            f.write(contrasenna)
             lock.release()
             break
         if contrasennaEncontrada: break
-        
 
 
 hilos = []
-f = open("archivo_cifrado.gpg", "rb")
+f = open("archivo.pdf.gpg", "rb")
 data = f.read()
 gpg = gnupg.GPG()
-combinations = [''.join(combination) for combination in itertools.product(characters, repeat=2)]
-listas_hilos = divideLista(combinations, 8)
-listas_hilos[2].append("qwerty")
+combinations = [''.join(combination) for combination in itertools.product(characters, repeat=5)]
+listas_hilos = divideLista(lineas_procesadas, 9)
+print(len(listas_hilos))
 for i in range(0, len(listas_hilos)):
+    print(len(listas_hilos[i]))
     hilos.append(threading.Thread(target=ProbarContraseña, args=(i, listas_hilos[i], data)))
 t1 = time.time()
 for i in range(0, len(hilos)):
