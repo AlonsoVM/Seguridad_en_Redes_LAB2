@@ -4,6 +4,7 @@ import string
 import gnupg
 import time
 import threading
+import signal
 import codecs
 import re
 
@@ -14,8 +15,14 @@ archivo_pass = "rockyou5.txt"
 lineas_procesadas = []
 contrasenna = ""
 lock = threading.Lock()
+last_item = [0]*9
 
+def handler(signal, frame):
+    global last_item
+    for position in last_item:
+        print(position)
 
+signal.signal(signal.SIGINT, handler)
 def contiene_palabras_con_numeros(linea):
     palabras = linea.split()
     for palabra in palabras:
@@ -39,11 +46,12 @@ def divideLista(lista:list, tamanno:int):
     return sublistas
     
 def ProbarContraseña(id:int, combinations:list, data):
-    i = 0
+    i = 10000
     #3000
-    for password in combinations[2000:3000]:
+    for password in combinations[10000:-11000]:
         resultado = gpg.decrypt(data, passphrase=password)
-        
+        i = i+1
+        last_item[id] = i
         if resultado.ok:
             print(f"Contraseña válida, iteración{i} desde el hilo:{id}")
             global contrasennaEncontrada, contrasenna
@@ -61,9 +69,8 @@ hilos = []
 f = open("archivo.pdf.gpg", "rb")
 data = f.read()
 gpg = gnupg.GPG()
-combinations = [''.join(combination) for combination in itertools.product(characters, repeat=5)]
-listas_hilos = divideLista(lineas_procesadas, 9)
-print(len(listas_hilos))
+combinations = [''.join(combination) for combination in itertools.product(characters, repeat=3)]
+listas_hilos = divideLista(combinations, 9)
 for i in range(0, len(listas_hilos)):
     print(len(listas_hilos[i]))
     hilos.append(threading.Thread(target=ProbarContraseña, args=(i, listas_hilos[i], data)))
