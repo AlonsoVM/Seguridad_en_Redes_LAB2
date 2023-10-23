@@ -16,5 +16,5 @@
  * Para indicar el archivo de salida utilizamos la opción **-o**
 
 ## Consideraciones:
-Cabe destecar que la opción por defecto que esta activada para el número de hilos es de 10, ya que es con la que se ha obtenido un mejor rendimiento probando las combinaciones de 2 carácteres.
+Cabe destecar que la opción **por defecto** que esta activada para el **número de hilos es de 10**, ya que es con la que se ha obtenido un mejor rendimiento probando las combinaciones de 2 carácteres, realizando entre 12 y 13 combinaciones por segundo.
 Por defecto **no se selecciona ningún archivo como entrada**, por lo que si no se indica un archivo el programa **fallará**, en el caso del archivo de salida, será **solution**.
