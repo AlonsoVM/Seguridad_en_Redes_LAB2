@@ -1,5 +1,10 @@
 # Seguridad_en_Redes_LAB2
 
+## Clonar el repositorio:
+ * La url al repositorio es la siguiente: https://github.com/AlonsoVM/Seguridad_en_Redes_LAB2
+ * Para clonar el repositorio usamos git:
+   * **git clone https://github.com/AlonsoVM/Seguridad_en_Redes_LAB2**
+
 ## Preparar el entorno para la ejecución:
  * Primero crearemos un entorno virtual con python para instalar las dependencias del proyecto, para ello ejecutamos el siguiente comando:
     *   **python -m venv nombre_del_entorno**
